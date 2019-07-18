@@ -37,7 +37,7 @@ $main-color: black;
     letter-spacing: 0.3em;
   }
 
-  .form-input-label{
+  .form-input-label {
     color: $sub-color;
     font-size: 16px;
     font-weight: normal;
@@ -46,9 +46,9 @@ $main-color: black;
     left: 5px;
     top: 10px;
     transition: 300ms ease all;
-  }
 
-  &.shrink {
-    @include shrinkLabel();
+    &.shrink {
+      @include shrinkLabel();
+    }
   }
 }
