@@ -20,7 +20,9 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
   );
 
   if (existingCartItem.quantity === 1) {
-    return cartItems.filter((cartItem) => cartItem.id !== cartItemToRemove.id);
+    // I don't like that if quantity is 1 and you press reduce quantity it deletes it, I think you can click by mistake and then need to go back to shop page to find that item
+    // so it's better to do nothing if quantity is 1
+    return cartItems;
   }
 
   return cartItems.map((cartItem) =>
