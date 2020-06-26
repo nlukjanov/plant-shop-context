@@ -4,6 +4,8 @@ import 'firebase/auth';
 import 'firebase/storage';
 import { config } from './firebase.config';
 
+import SHOP_DATA from '../redux/shop/shop.data';
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 
@@ -52,9 +54,27 @@ export const firestore = firebase.firestore();
 const storage = firebase.storage();
 
 export const updateImagesUrls = async () => {
+  const urlCategories = ['bathroom', 'bedroom', 'kitchen', 'living', 'study'];
   const storageRef = storage.ref();
-  const plantsStorage = await storageRef.child('plants').listAll();
-  console.log(plantsStorage);
+
+  let imageUrls = {};
+  
+  async function getCategoryStorage(category) {
+    console.log(category);
+    return await storageRef.child(`plants/${category}`).listAll();
+  }
+  
+  urlCategories.map(async (category) => {
+    const categoryArray = [];
+    const categoryStorage = await getCategoryStorage(category);
+    categoryStorage.items.map((image) => {
+      categoryArray.push('gs://' + config.storageBucket + '/' + image.fullPath);
+    });
+    imageUrls = { ...imageUrls, [category]: categoryArray };
+  });
+  setTimeout(() => {
+    console.log(imageUrls);
+  }, 3000);
 };
 
 export const addCollectionAndDocuments = async (
