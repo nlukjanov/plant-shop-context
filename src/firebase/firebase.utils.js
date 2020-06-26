@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import 'firebase/storage';
 import { config } from './firebase.config';
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -48,6 +49,13 @@ firebase.initializeApp(config);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+const storage = firebase.storage();
+
+export const updateImagesUrls = async () => {
+  const storageRef = storage.ref();
+  const plantsStorage = await storageRef.child('plants').listAll();
+  console.log(plantsStorage);
+};
 
 export const addCollectionAndDocuments = async (
   collectionKey,

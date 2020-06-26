@@ -10,7 +10,11 @@ import SigninPage from './pages/signinpage/signinpage.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 
 import Header from './components/header/header.component';
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import {
+  auth,
+  createUserProfileDocument,
+  updateImagesUrls
+} from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selector';
 
@@ -34,6 +38,7 @@ class App extends Component {
         });
       }
       setCurrentUser(userAuth);
+      updateImagesUrls();
     });
   }
 
