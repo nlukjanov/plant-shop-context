@@ -56,7 +56,6 @@ export const updateImagesUrls = async () => {
   const urlCategories = ['bathroom', 'bedroom', 'kitchen', 'living', 'study'];
   const storageRef = storage.ref();
 
-  const shopData = JSON.parse(JSON.stringify(SHOP_DATA));
   let imageUrls = {};
 
   const getCategoryStorage = async (category) => {
@@ -68,11 +67,12 @@ export const updateImagesUrls = async () => {
       urlCategories.map(async (category) => {
         const categoryArray = [];
         const categoryStorage = await getCategoryStorage(category);
-        categoryStorage.items.map((image) => {
-          return categoryArray.push(
-            'gs://' + config.storageBucket + '/' + image.fullPath
-          );
-        });
+        await Promise.all(
+          categoryStorage.items.map(async (image) => {
+            const url = await image.getDownloadURL();
+            return categoryArray.push(url);
+          })
+        );
         imageUrls = { ...imageUrls, [category]: categoryArray };
       })
     );
@@ -82,7 +82,9 @@ export const updateImagesUrls = async () => {
   function updateUrls() {
     urlCategories.map((category) => {
       return SHOP_DATA[category].items.map((item, index) => {
-        return (item.imageUrl = imageUrls[category][index]);
+        const namePart = item.name.split(' ')[0].toLowerCase();
+        const newUrl = imageUrls[category].filter((item) => item.includes(namePart))
+        return (item.imageUrl = newUrl[0]);
       });
     });
     return SHOP_DATA;
