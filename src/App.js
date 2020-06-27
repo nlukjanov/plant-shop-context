@@ -13,7 +13,8 @@ import Header from './components/header/header.component';
 import {
   auth,
   createUserProfileDocument,
-  updateImagesUrls
+  updateImagesUrls,
+  addCollectionAndDocuments
 } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selector';
@@ -39,7 +40,12 @@ class App extends Component {
       }
       setCurrentUser(userAuth);
       const newShopData = await updateImagesUrls();
-      console.log(newShopData);
+      const newShopDataArray = Object.values(newShopData);
+      console.log(newShopDataArray);
+      addCollectionAndDocuments(
+        'collections',
+        newShopDataArray.map(({ title, items }) => ({ title, items }))
+      );
     });
   }
 
