@@ -3,7 +3,6 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
 import { config } from './firebase.config';
-
 import SHOP_DATA from '../redux/shop/shop.data';
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -58,23 +57,38 @@ export const updateImagesUrls = async () => {
   const storageRef = storage.ref();
 
   let imageUrls = {};
-  
-  async function getCategoryStorage(category) {
-    console.log(category);
+
+  const getCategoryStorage = async (category) => {
     return await storageRef.child(`plants/${category}`).listAll();
+  };
+
+  async function getImageUrls() {
+    await Promise.all(
+      urlCategories.map(async (category) => {
+        const categoryArray = [];
+        const categoryStorage = await getCategoryStorage(category);
+        categoryStorage.items.map((image) => {
+          return categoryArray.push(
+            'gs://' + config.storageBucket + '/' + image.fullPath
+          );
+        });
+        imageUrls = { ...imageUrls, [category]: categoryArray };
+      })
+    );
+    updateUrls();
   }
-  
-  urlCategories.map(async (category) => {
-    const categoryArray = [];
-    const categoryStorage = await getCategoryStorage(category);
-    categoryStorage.items.map((image) => {
-      categoryArray.push('gs://' + config.storageBucket + '/' + image.fullPath);
+
+  function updateUrls() {
+    urlCategories.map((category) => {
+      return SHOP_DATA[category].items.map((item, index) => {
+        return (item.imageUrl = imageUrls[category][index]);
+      });
     });
-    imageUrls = { ...imageUrls, [category]: categoryArray };
-  });
-  setTimeout(() => {
-    console.log(imageUrls);
-  }, 3000);
+  }
+
+  getImageUrls();
+
+  return SHOP_DATA;
 };
 
 export const addCollectionAndDocuments = async (

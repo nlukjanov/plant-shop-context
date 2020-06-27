@@ -38,7 +38,8 @@ class App extends Component {
         });
       }
       setCurrentUser(userAuth);
-      updateImagesUrls();
+      const newShopData = await updateImagesUrls();
+      console.log(newShopData);
     });
   }
 
