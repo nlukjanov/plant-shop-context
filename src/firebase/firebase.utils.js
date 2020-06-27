@@ -67,28 +67,32 @@ export const updateImagesUrls = async () => {
       urlCategories.map(async (category) => {
         const categoryArray = [];
         const categoryStorage = await getCategoryStorage(category);
-        categoryStorage.items.map((image) => {
-          return categoryArray.push(
-            'gs://' + config.storageBucket + '/' + image.fullPath
-          );
-        });
+        await Promise.all(
+          categoryStorage.items.map(async (image) => {
+            const url = await image.getDownloadURL();
+            return categoryArray.push(url);
+          })
+        );
         imageUrls = { ...imageUrls, [category]: categoryArray };
       })
     );
-    updateUrls();
+    return updateUrls();
   }
 
   function updateUrls() {
     urlCategories.map((category) => {
       return SHOP_DATA[category].items.map((item, index) => {
-        return (item.imageUrl = imageUrls[category][index]);
+        const namePart = item.name.split(' ')[0].toLowerCase();
+        const newUrl = imageUrls[category].filter((item) => item.includes(namePart))
+        return (item.imageUrl = newUrl[0]);
       });
     });
+    return SHOP_DATA;
   }
 
-  getImageUrls();
-
-  return SHOP_DATA;
+  const newData = await getImageUrls();
+  console.log(newData);
+  return newData;
 };
 
 export const addCollectionAndDocuments = async (
