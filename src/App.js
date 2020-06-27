@@ -39,14 +39,6 @@ class App extends Component {
         });
       }
       setCurrentUser(userAuth);
-      const newShopData = await updateImagesUrls();
-      const newShopDataArray = Object.values(newShopData);
-      addCollectionAndDocuments(
-        'collections',
-        newShopDataArray.map(({ title, items }) => {
-          return { title, items };
-        })
-      );
     });
   }
 
