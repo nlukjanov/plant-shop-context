@@ -41,10 +41,11 @@ class App extends Component {
       setCurrentUser(userAuth);
       const newShopData = await updateImagesUrls();
       const newShopDataArray = Object.values(newShopData);
-      console.log(newShopDataArray);
       addCollectionAndDocuments(
         'collections',
-        newShopDataArray.map(({ title, items }) => ({ title, items }))
+        newShopDataArray.map(({ title, items }) => {
+          return { title, items };
+        })
       );
     });
   }

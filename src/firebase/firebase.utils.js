@@ -56,6 +56,7 @@ export const updateImagesUrls = async () => {
   const urlCategories = ['bathroom', 'bedroom', 'kitchen', 'living', 'study'];
   const storageRef = storage.ref();
 
+  const shopData = JSON.parse(JSON.stringify(SHOP_DATA));
   let imageUrls = {};
 
   const getCategoryStorage = async (category) => {
@@ -75,7 +76,7 @@ export const updateImagesUrls = async () => {
         imageUrls = { ...imageUrls, [category]: categoryArray };
       })
     );
-    updateUrls();
+    return updateUrls();
   }
 
   function updateUrls() {
@@ -84,11 +85,12 @@ export const updateImagesUrls = async () => {
         return (item.imageUrl = imageUrls[category][index]);
       });
     });
+    return SHOP_DATA;
   }
 
-  getImageUrls();
-
-  return SHOP_DATA;
+  const newData = await getImageUrls();
+  console.log(newData);
+  return newData;
 };
 
 export const addCollectionAndDocuments = async (
