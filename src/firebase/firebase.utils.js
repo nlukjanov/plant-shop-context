@@ -83,7 +83,9 @@ export const updateImagesUrls = async () => {
     urlCategories.map((category) => {
       return SHOP_DATA[category].items.map((item, index) => {
         const namePart = item.name.split(' ')[0].toLowerCase();
-        const newUrl = imageUrls[category].filter((item) => item.includes(namePart))
+        const newUrl = imageUrls[category].filter((item) =>
+          item.includes(namePart)
+        );
         return (item.imageUrl = newUrl[0]);
       });
     });
@@ -107,6 +109,15 @@ export const addCollectionAndDocuments = async (
   });
 
   return await batch.commit();
+};
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      unsubscribe();
+      resolve(userAuth);
+    }, reject);
+  });
 };
 
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
