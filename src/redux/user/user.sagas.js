@@ -85,14 +85,20 @@ export function* onSignUpStart() {
   yield takeLatest(UserActionTypes.SIGN_UP_START, signUpWithEmail);
 }
 
-export function* signUpWithEmail({ payload: { displayName, email, password } }) {
+export function* signUpWithEmail({
+  payload: { displayName, email, password }
+}) {
   try {
-    const {user} = yield auth.createUserWithEmailAndPassword(email, password);
+    const { user } = yield auth.createUserWithEmailAndPassword(email, password);
     yield createUserProfileDocument(user, { displayName });
-    yield put(signUpSuccess());
+    yield put(signUpSuccess({ email, password }));
   } catch (error) {
     yield put(signUpFailure(error));
   }
+}
+
+export function* signInOnSignUp() {
+  yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInWithEmail);
 }
 
 export function* userSagas() {
@@ -101,6 +107,7 @@ export function* userSagas() {
     call(onEmailSignInStart),
     call(onCheckUserSession),
     call(onSignOutStart),
-    call(onSignUpStart)
+    call(onSignUpStart),
+    call(signInOnSignUp)
   ]);
 }
