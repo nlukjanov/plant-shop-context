@@ -13,7 +13,7 @@ import Header from './components/header/header.component';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { checkUserSession } from './redux/user/user.actions';
 
-const App = ({ checkUserSession }) => {
+const App = ({ checkUserSession, currentUser }) => {
   const unsubscribeFromAuth = null;
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const App = ({ checkUserSession }) => {
           exact
           path='/signin'
           render={() =>
-            this.props.currentUser ? <Redirect to='/' /> : <SigninPage />
+            currentUser ? <Redirect to='/' /> : <SigninPage />
           }
         />
       </Switch>
