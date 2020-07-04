@@ -27,7 +27,7 @@ const INITIAL_STATE = {
         'https://firebasestorage.googleapis.com/v0/b/ecommerce-7fec4.appspot.com/o/plants%2Fliving-room.jpg?alt=media&token=850a8b01-cd15-4dc6-ab7d-d024e0654fbd',
       size: 'large',
       id: 4,
-      linkUrl: 'shop/living'
+      linkUrl: 'shop/living%20room'
     },
     {
       title: 'study',
