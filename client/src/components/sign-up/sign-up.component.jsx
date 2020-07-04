@@ -6,7 +6,7 @@ import CustomButton from '../custom-button/custom-button.component';
 
 import { emailSignUpStart } from '../../redux/user/user.actions';
 
-import './sign-up.styles.scss';
+import { SignUpContainer, SignUpTitle } from './sign-up.styles';
 
 const SignUp = ({ emailSignUpStart }) => {
   const [userCredentials, setUserCredentials] = useState({
@@ -15,31 +15,29 @@ const SignUp = ({ emailSignUpStart }) => {
     password: '',
     confirmPassword: ''
   });
+
   const { displayName, email, password, confirmPassword } = userCredentials;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (password !== confirmPassword) {
       alert("passwords don't match");
       return;
     }
-    emailSignUpStart(displayName, email, password);
-    setUserCredentials({
-      displayName: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    });
+
+    emailSignUpStart({ displayName, email, password });
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
     setUserCredentials({ ...userCredentials, [name]: value });
   };
 
   return (
-    <div className='sign-up'>
-      <h2 className='title'>I do not have an account</h2>
+    <SignUpContainer>
+      <SignUpTitle>I do not have a account</SignUpTitle>
       <span>Sign up with your email and password</span>
       <form className='sign-up-form' onSubmit={handleSubmit}>
         <FormInput
@@ -76,13 +74,13 @@ const SignUp = ({ emailSignUpStart }) => {
         />
         <CustomButton type='submit'>SIGN UP</CustomButton>
       </form>
-    </div>
+    </SignUpContainer>
   );
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  emailSignUpStart: (displayName, email, password) =>
-    dispatch(emailSignUpStart({ displayName, email, password }))
+  emailSignUpStart: (userCredentials) =>
+    dispatch(emailSignUpStart(userCredentials))
 });
 
 export default connect(null, mapDispatchToProps)(SignUp);

@@ -9,27 +9,35 @@ import {
   emailSignInStart
 } from '../../redux/user/user.actions';
 
-import './sign-in.styles.scss';
+import {
+  SignInContainer,
+  SignInTitle,
+  ButtonsBarContainer
+} from './sign-in.styles';
 
-const SignIn = ({ googleSignInStart, emailSignInStart }) => {
-  const [userCredentials, setUserCredentials] = useState({
+const SignIn = ({ emailSignInStart, googleSignInStart }) => {
+  const [userCredentials, setCredentials] = useState({
     email: '',
     password: ''
   });
+
   const { email, password } = userCredentials;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     emailSignInStart(email, password);
   };
 
   const handleChange = (event) => {
     const { value, name } = event.target;
-    setUserCredentials({ ...userCredentials, [name]: value });
+
+    setCredentials({ ...userCredentials, [name]: value });
   };
+
   return (
-    <div className='sign-in'>
-      <h2 className='title'>I already have account</h2>
+    <SignInContainer>
+      <SignInTitle>I already have an account</SignInTitle>
       <span>Sign in with your email and password</span>
 
       <form onSubmit={handleSubmit}>
@@ -44,23 +52,23 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
         <FormInput
           name='password'
           type='password'
-          handleChange={handleChange}
           value={password}
+          handleChange={handleChange}
           label='password'
           required
         />
-        <div className='buttons'>
-          <CustomButton type='submit'>Sign In</CustomButton>
+        <ButtonsBarContainer>
+          <CustomButton type='submit'> Sign in </CustomButton>
           <CustomButton
             type='button'
             onClick={googleSignInStart}
             isGoogleSignIn
           >
-            Sign In with Google
+            Sign in with Google
           </CustomButton>
-        </div>
+        </ButtonsBarContainer>
       </form>
-    </div>
+    </SignInContainer>
   );
 };
 
