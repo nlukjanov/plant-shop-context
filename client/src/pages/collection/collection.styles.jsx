@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const CollectionPageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 0 10px;
 `;
 
 export const CollectionTitle = styled.h2`
@@ -13,8 +14,14 @@ export const CollectionTitle = styled.h2`
 export const CollectionItemsContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 10px;
+  grid-gap: 15px;
   & > div {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
+  }
+
+  @media screen and (max-width: 800px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
   }
 `;
