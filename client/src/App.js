@@ -8,7 +8,9 @@ import Header from './components/header/header.component';
 import { GlobalStyle } from './global.styles';
 
 import { selectCurrentUser } from './redux/user/user.selector';
-import { checkUserSession } from './redux/user/user.actions';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+
+import { setCurrentUser } from './redux/user/user.actions';
 
 const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
 const ShopPage = lazy(() => import('./pages/shop/shop.component'));
@@ -17,15 +19,29 @@ const SigninPage = lazy(() =>
 );
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component'));
 
-const App = ({ checkUserSession, currentUser }) => {
-  const unsubscribeFromAuth = null;
+const App = ({ currentUser, setCurrentUser }) => {
+  let unsubscribeFromAuth = null;
 
   useEffect(() => {
-    checkUserSession();
+
+    unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot((snapShot) => {
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data()
+          });
+        });
+      }
+
+      setCurrentUser(userAuth);
+    });
     return () => {
       unsubscribeFromAuth();
     };
-  }, [checkUserSession]);
+  }, []);
 
   return (
     <div>
@@ -53,7 +69,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  checkUserSession: () => dispatch(checkUserSession())
+  setCurrentUser: (user) => dispatch(setCurrentUser(user))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
