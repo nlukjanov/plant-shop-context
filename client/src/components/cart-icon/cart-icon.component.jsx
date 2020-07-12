@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { selectCartItemsCount } from '../../redux/cart/cart.selectors';
 
-import CartContext from '../../context/cart/cart.context';
+import { CartContext } from '../../providers/cart/cart.provider';
 
 import {
   CartContainer,
