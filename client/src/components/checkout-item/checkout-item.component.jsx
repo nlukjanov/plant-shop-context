@@ -14,9 +14,9 @@ import {
   RemoveButtonContainer
 } from './checkout-item.styles';
 
-const CheckoutItem = ({ cartItem, clearItem }) => {
+const CheckoutItem = ({ cartItem }) => {
   const { name, imageUrl, price, quantity } = cartItem;
-  const { addItem, removeItem } = useContext(CartContext);
+  const { addItem, removeItem, clearItemFromCart } = useContext(CartContext);
   return (
     <CheckoutItemContainer>
       <ImageContainer>
@@ -33,7 +33,7 @@ const CheckoutItem = ({ cartItem, clearItem }) => {
         </div>
       </QuantityContainer>
       <PriceContainer>{price}</PriceContainer>
-      <RemoveButtonContainer onClick={() => clearItem(cartItem)}>
+      <RemoveButtonContainer onClick={() => clearItemFromCart(cartItem)}>
         &#10005;
       </RemoveButtonContainer>
     </CheckoutItemContainer>
