@@ -19,10 +19,11 @@ const CartProvider = ({ children }) => {
   const [cartItemsCount, setCartItemsCount] = useState(0);
 
   const addItem = (item) => setCartItems(addItemToCart(cartItems, item));
+  const removeItem = (item) => setCartItems(removeItemFromCart(cartItems, item));
   const toggleHidden = () => setHidden(!hidden);
   return (
     <CartContext.Provider
-      value={{ hidden, toggleHidden, cartItems, addItem, cartItemsCount }}
+      value={{ hidden, toggleHidden, cartItems, addItem, cartItemsCount, removeItem }}
     >
       {children}
     </CartContext.Provider>
