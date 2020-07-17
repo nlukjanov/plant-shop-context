@@ -21,6 +21,7 @@ const App = () => {
   let unsubscribeFromAuth = null;
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
@@ -61,6 +62,5 @@ const App = () => {
     </div>
   );
 };
-
 
 export default App;
