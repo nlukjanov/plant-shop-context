@@ -2,7 +2,12 @@ import React, { useContext } from 'react';
 
 import CollectionItem from '../../components/collection-item/collection-item.component';
 
-import CollectionsContext from '../../context/collections/collections.context';
+import { CollectionsContext } from '../../providers/collections/collections.provider';
+
+import {
+  SpinnerContainer,
+  SpinnerOverlay
+} from '../../components/with-spinner/with-spinner.styles';
 
 import {
   CollectionPageContainer,
@@ -12,13 +17,19 @@ import {
 
 const CollectionPage = ({ match }) => {
   const collections = useContext(CollectionsContext);
-  const collection = collections[match.params.collectionId];
-  const { title, items } = collection;
-  return (
+  console.log(collections);
+  const collection = collections.collections[match.params.collectionId];
+  console.log(collections.collections);
+  // const { title, items } = collection;
+  return collections.isLoading ? (
+    <SpinnerOverlay>
+      <SpinnerContainer />
+    </SpinnerOverlay>
+  ) : (
     <CollectionPageContainer>
-      <CollectionTitle>{title}</CollectionTitle>
+      <CollectionTitle>{collection.title}</CollectionTitle>
       <CollectionItemsContainer>
-        {items.map((item) => (
+        {collection.items.map((item) => (
           <CollectionItem key={item.id} item={item} />
         ))}
       </CollectionItemsContainer>
