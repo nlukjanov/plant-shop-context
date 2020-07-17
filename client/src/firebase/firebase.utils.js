@@ -3,7 +3,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
 import { config } from './firebase.config';
-import SHOP_DATA from '../redux/shop/shop.data';
+import SHOP_DATA from '../context/collections/shop.data';
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
