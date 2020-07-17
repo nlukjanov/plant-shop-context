@@ -18,11 +18,15 @@ const CollectionsProvider = ({ children }) => {
   useEffect(() => {
     setIsLoading(true);
     const updateCollections = async () => {
-      const collectionRef = firestore.collection('collections');
-      const snapshot = await collectionRef.get();
-      const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-      setCollections(collectionsMap);
-      setIsLoading(false);
+      try {
+        const collectionRef = firestore.collection('collections');
+        const snapshot = await collectionRef.get();
+        const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
+        setCollections(collectionsMap);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
     };
     updateCollections();
   }, []);
