@@ -46,19 +46,21 @@ const App = () => {
       <GlobalStyle />
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
+        <Switch>
+          <Suspense fallback={<div>...Loading</div>}>
+            <Route exact path='/' component={HomePage} />
+            <Route path='/shop' component={ShopPage} />
+            <Route exact path='/checkout' component={CheckoutPage} />
+            <Route
+              exact
+              path='/signin'
+              render={() =>
+                currentUser ? <Redirect to='/' /> : <SigninPage />
+              }
+            />
+          </Suspense>
+        </Switch>
       </CurrentUserContext.Provider>
-      <Switch>
-        <Suspense fallback={<div>...Loading</div>}>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/shop' component={ShopPage} />
-          <Route exact path='/checkout' component={CheckoutPage} />
-          <Route
-            exact
-            path='/signin'
-            render={() => (currentUser ? <Redirect to='/' /> : <SigninPage />)}
-          />
-        </Suspense>
-      </Switch>
     </div>
   );
 };

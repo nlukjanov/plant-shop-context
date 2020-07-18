@@ -46,6 +46,17 @@ export const convertCollectionsSnapshotToMap = (collections) => {
   }, {});
 };
 
+export const saveCartForLater = async (userAuth, cartItems) => {
+  if (!userAuth) return;
+  const userRef = firestore.doc(`users/${userAuth.id}`);
+  try {
+    await userRef.set({ cartItems }, { merge: true });
+  } catch (error) {
+    console.log('Error saving cart for later', error.message);
+  }
+  return userRef;
+};
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();

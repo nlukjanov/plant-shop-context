@@ -3,6 +3,9 @@ import React, { useContext } from 'react';
 import StripeCheckoutButton from '../../components/stripe-button/stripe-button.component';
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
 import { CartContext } from '../../providers/cart/cart.provider';
+import CurrentUserContext from '../../context/current-user/current-user.context';
+
+import { saveCartForLater } from '../../firebase/firebase.utils';
 
 import {
   CheckoutPageContainer,
@@ -14,6 +17,15 @@ import {
 
 const CheckoutPage = () => {
   const { cartItems, cartTotal } = useContext(CartContext);
+  const currentUser = useContext(CurrentUserContext);
+
+  const saveCart = () => {
+    try {
+      saveCartForLater(currentUser, cartItems);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <CheckoutPageContainer>
@@ -43,6 +55,7 @@ const CheckoutPage = () => {
         <br />
         4242 4242 4242 4242 - Exp: 01/20 - CVV: 123
       </WarningContainer>
+      {currentUser && <button onClick={saveCart}>Save for Later</button>}
       <StripeCheckoutButton price={cartTotal} />
     </CheckoutPageContainer>
   );
