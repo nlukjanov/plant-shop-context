@@ -19,13 +19,11 @@ import {
 
 const Header = () => {
   const currentUser = useContext(CurrentUserContext);
-  const { hidden, cartItems, clearCart } = useContext(CartContext);
+  const { hidden } = useContext(CartContext);
   const history = useHistory();
 
   const signOut = () => {
     auth.signOut();
-    clearCart(cartItems);
-    localStorage.removeItem('cartItems');
     history.push('/');
   };
   return (
