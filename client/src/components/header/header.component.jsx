@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { auth } from '../../firebase/firebase.utils';
+import { useHistory, withRouter } from 'react-router-dom';
 
 import { ReactComponent as Logo } from '../../assets/plant.svg';
 
@@ -18,7 +19,15 @@ import {
 
 const Header = () => {
   const currentUser = useContext(CurrentUserContext);
-  const { hidden } = useContext(CartContext);
+  const { hidden, cartItems, clearCart } = useContext(CartContext);
+  const history = useHistory();
+
+  const signOut = () => {
+    auth.signOut();
+    clearCart(cartItems);
+    localStorage.removeItem('cartItems');
+    history.push('/');
+  };
   return (
     <HeaderContainer>
       <LogoContainer to='/'>
@@ -28,7 +37,7 @@ const Header = () => {
         <OptionLink to='/shop'>SHOP</OptionLink>
         <OptionLink to='/contact'>CONTACT</OptionLink>
         {currentUser ? (
-          <OptionLink as='div' onClick={() => auth.signOut()}>
+          <OptionLink as='div' onClick={() => signOut()}>
             SIGN OUT
           </OptionLink>
         ) : (
@@ -41,4 +50,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default withRouter(Header);
