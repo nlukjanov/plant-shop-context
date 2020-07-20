@@ -27,10 +27,6 @@ const App = () => {
     unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-        const userObject = await userRef.get();
-        const cart = userObject.data().cartItems;
-        console.log(cart);
-        restoreCartFromLoggedInUser(cart);
         userRef.onSnapshot((snapShot) => {
           setCurrentUser({
             id: snapShot.id,
@@ -55,7 +51,14 @@ const App = () => {
           <Suspense fallback={<div>...Loading</div>}>
             <Route exact path='/' component={HomePage} />
             <Route path='/shop' component={ShopPage} />
-            <Route exact path='/checkout' component={CheckoutPage} />
+            <Route
+              exact
+              path='/checkout'
+              render={() => {
+                console.log(currentUser);
+                return currentUser ? <CheckoutPage /> : <Redirect to='/signin' />;
+              }}
+            />
             <Route
               exact
               path='/signin'

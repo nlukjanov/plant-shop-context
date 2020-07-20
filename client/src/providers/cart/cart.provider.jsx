@@ -18,9 +18,7 @@ export const CartContext = createContext({
   removeItem: () => {},
   clearItemFromCart: () => {},
   cartItemsCount: 0,
-  cartTotal: 0,
-  clearCart: () => {},
-  restoreCartFromLoggedInUser: () => {}
+  cartTotal: 0
 });
 
 const CartProvider = ({ children }) => {
