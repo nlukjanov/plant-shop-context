@@ -104,7 +104,6 @@ export const updateImagesUrls = async () => {
   }
 
   const newData = await getImageUrls();
-  console.log(newData);
   return newData;
 };
 

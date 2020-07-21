@@ -17,9 +17,7 @@ import {
 
 const CollectionPage = ({ match }) => {
   const collections = useContext(CollectionsContext);
-  console.log(collections);
   const collection = collections.collections[match.params.collectionId];
-  console.log(collections.collections);
   // const { title, items } = collection;
   return collections.isLoading ? (
     <SpinnerOverlay>
