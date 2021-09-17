@@ -7,7 +7,7 @@ import {
   getCartItemsCount,
   getCartTotal,
   setLocalStorage,
-  getLocalStorage
+  getLocalStorage,
 } from './cart.utils';
 
 export const CartContext = createContext({
@@ -18,14 +18,14 @@ export const CartContext = createContext({
   removeItem: () => {},
   clearItemFromCart: () => {},
   cartItemsCount: 0,
-  cartTotal: 0
+  cartTotal: 0,
 });
 
 const CartProvider = ({ children }) => {
   // we useState to set default value which is the same as in cart context (true)
   const [hidden, setHidden] = useState(true);
   const [cartItems, setCartItems] = useState(() =>
-    getLocalStorage('cartItems', [])
+    getLocalStorage('cartItems', []),
   );
   const [cartItemsCount, setCartItemsCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
@@ -62,7 +62,7 @@ const CartProvider = ({ children }) => {
         clearItemFromCart,
         cartTotal,
         clearCart,
-        restoreCartFromLoggedInUser
+        restoreCartFromLoggedInUser,
       }}
     >
       {children}

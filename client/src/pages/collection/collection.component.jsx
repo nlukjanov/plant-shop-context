@@ -6,28 +6,28 @@ import { CollectionsContext } from '../../providers/collections/collections.prov
 
 import {
   SpinnerContainer,
-  SpinnerOverlay
+  SpinnerOverlay,
 } from '../../components/with-spinner/with-spinner.styles';
 
 import {
   CollectionPageContainer,
   CollectionTitle,
-  CollectionItemsContainer
+  CollectionItemsContainer,
 } from './collection.styles';
 
 const CollectionPage = ({ match }) => {
-  const collections = useContext(CollectionsContext);
-  const collection = collections.collections[match.params.collectionId];
-  // const { title, items } = collection;
-  return collections.isLoading ? (
+  const { collections, isLoading } = useContext(CollectionsContext);
+  const collection = collections[match.params.collectionId];
+  const { title, items } = collection;
+  return isLoading ? (
     <SpinnerOverlay>
       <SpinnerContainer />
     </SpinnerOverlay>
   ) : (
     <CollectionPageContainer>
-      <CollectionTitle>{collection.title}</CollectionTitle>
+      <CollectionTitle>{title}</CollectionTitle>
       <CollectionItemsContainer>
-        {collection.items.map((item) => (
+        {items.map((item) => (
           <CollectionItem key={item.id} item={item} />
         ))}
       </CollectionItemsContainer>
